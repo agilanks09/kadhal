@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: white;
+        }
+        img {
+            margin-top: 50px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .alert {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>will you be my Valentine 🎉</h1>
+    <img src="image/kadhal.gif" alt="Congratulations Image">
+    <br>
+    <button onclick="showPopup()">Yes, I will</button>
+    <button onclick="showAlert()">No, sorry</button>
+    <div id="alert" class="alert">Please, I am a papa, Accept me as Valentine.</div>
+    <script>
+        function showPopup() {
+            alert("Thank you! ❤️ Please meet me at my place tomorrow evening, I have a surprise for you");
+            window.location.href = "index.html"; // Redirect to the index page
+        }
+        
+        function showAlert() {
+            const alertBox = document.getElementById("alert");
+            alertBox.style.display = "block";
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 3000);
+        }
+    </script>
+    </script>
+</body>
+</html>

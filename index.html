@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadhal</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: pink;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .top-container {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+            background-color: pink;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.0"></script>
+</head>
+<body>
+    <div class="top-container">
+        <h1>Fixing my heart</h1>
+        <p>Please Use arrow keys to move and try to put the missging piece of my heart</p>
+        <p>Moves: <span id="movesCounter">0</span> | Time: <span id="timer">0</span>s</p>
+    </div>
+    <canvas id="mazeCanvas" width="600" height="600"></canvas>   
+    <script>
+        const canvas = document.getElementById("mazeCanvas");
+        const ctx = canvas.getContext("2d");
+        const tileSize = 40;
+        let moves = 0;
+        let time = 0;
+        let timerInterval = setInterval(() => {
+            time++;
+            document.getElementById("timer").innerText = time;
+        }, 1000);
+        
+        const moveSound = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
+        const winSound = new Audio("https://www.fesliyanstudios.com/play-mp3/390");
+        
+        let mazes = [
+    [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+        [1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1],
+        [1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1],
+        [1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 3, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ]
+];
+        let currentMazeIndex = 0;
+        let maze = mazes[currentMazeIndex];
+        let playerPosition = { x: 1, y: 1 };
+        let goalPosition = { x: 13, y: 13 };
+        
+        function drawMaze() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let y = 0; y < maze.length; y++) {
+                for (let x = 0; x < maze[y].length; x++) {
+                    if (maze[y][x] === 1) {
+                        ctx.fillStyle = "black";
+                        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+                    }
+                    if (maze[y][x] === 3) {
+                        ctx.fillStyle = "#3f1717";
+                        ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+                    }
+                }
+            }
+            ctx.fillStyle = "red";
+            ctx.fillRect(playerPosition.x * tileSize, playerPosition.y * tileSize, tileSize, tileSize);
+        }
+        
+    function movePlayer(dx, dy) {
+        let newX = playerPosition.x + dx;
+        let newY = playerPosition.y + dy;
+        if (maze[newY] && maze[newY][newX] !== undefined && maze[newY][newX] !== 1) {
+            playerPosition.x = newX;
+            playerPosition.y = newY;
+            moves++;
+            document.getElementById("movesCounter").innerText = moves;
+            moveSound.play();
+        }
+        if (newX === goalPosition.x && newY === goalPosition.y) {
+            winSound.play();
+            setTimeout(() => {
+                confetti();
+                alert("Thank you so much for fixing my heart");
+                window.location.href = "congratulations.html"; // Redirect to the new page
+            }, 300);
+            clearInterval(timerInterval);
+        }
+        drawMaze();
+    }
+                document.addEventListener("keydown", (event) => {
+                    if (event.key === "ArrowUp") movePlayer(0, -1);
+                    if (event.key === "ArrowDown") movePlayer(0, 1);
+                    if (event.key === "ArrowLeft") movePlayer(-1, 0);
+                    if (event.key === "ArrowRight") movePlayer(1, 0);
+                });
+        
+                drawMaze();
+            </script>
+        </body>
+        </html>
+    </script>
+</body>
+</html>
